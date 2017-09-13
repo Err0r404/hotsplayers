@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Hero;
 use App\Player;
 use Illuminate\Support\Facades\DB;
 
@@ -66,7 +67,23 @@ class PlayerController extends Controller{
      * @return Response
      */
     public function show($id){
+        // Get the Player
+        $player = Player::find($id);
     
+        $heroes = DB::table('participations')
+                    ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
+                    ->select(
+                        'participations.hero_id',
+                        'heroes.name',
+                        DB::raw('COUNT(1) AS total_games'),
+                        DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                        DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+                    )
+                    ->where('player_id', '=', $id)
+                    ->groupBy('hero_id')
+                    ->get();
+        
+        return view('players.show', ['player' => $player, 'heroes' => $heroes]);
     }
     
     /**

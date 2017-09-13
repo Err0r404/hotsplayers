@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/players', 'PlayerController@index');
+Route::get('/players/{id}', 'PlayerController@show');
 
 Route::resource('player', 'PlayerController');
 Route::resource('hero', 'HeroController');
