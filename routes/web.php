@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/players', 'PlayerController@index');
+
 Route::resource('player', 'PlayerController');
 Route::resource('hero', 'HeroController');
 Route::resource('map', 'MapController');

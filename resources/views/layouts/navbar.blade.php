@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{url('/')}}">
             <img src="{{URL::asset('/images/nexus.png')}}" width="30" height="30" class="d-inline-block align-top" alt="">
             HOTS Players
         </a>
@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{url('/players/')}}">Players</a>
                 </li>
             </ul>
 

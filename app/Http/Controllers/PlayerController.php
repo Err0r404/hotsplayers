@@ -14,7 +14,9 @@ class PlayerController extends Controller{
      * @return Response
      */
     public function index(){
-    
+        $players = DB::table('players')->orderBy('battletag')->paginate(50);
+
+        return view('players.index', ['players' => $players]);
     }
     
     /**
@@ -27,11 +29,15 @@ class PlayerController extends Controller{
         //     , COUNT(1) AS total_games
         //     , SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win
         //     , COUNT(1)-SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_lose
-        //     , (SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100 AS percent_win
+        //     , ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win
         // FROM    `participations`, `players`
         // WHERE 	`participations`.`player_id` = `players`.`id`
         // GROUP BY `player_id`
-        // ORDER BY total_games DESC
+        // HAVING 	total_games > 150
+        // #ORDER BY total_win DESC
+        // #ORDER BY percent_win  DESC
+        // ORDER BY total_win DESC, percent_win  DESC
+        // #ORDER BY percent_win desc, total_win  DESC
     }
     
     /**
