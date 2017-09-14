@@ -69,7 +69,8 @@ class PlayerController extends Controller{
     public function show($id){
         // Get the Player
         $player = Player::find($id);
-    
+
+        // Get stats for all his Heroes played
         $heroes = DB::table('participations')
                     ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
                     ->select(
