@@ -72,19 +72,34 @@ class PlayerController extends Controller{
 
         // Get stats for all his Heroes played
         $heroes = DB::table('participations')
-                    ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
-                    ->select(
-                        'heroes.id',
-                        'heroes.name',
-                        DB::raw('COUNT(1) AS total_games'),
-                        DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
-                        DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
-                    )
-                    ->where('player_id', '=', $id)
-                    ->groupBy('hero_id')
-                    ->get();
+            ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
+            ->select(
+                'heroes.id',
+                'heroes.name',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('player_id', '=', $id)
+            ->groupBy('hero_id')
+            ->get();
         
-        return view('players.show', ['player' => $player, 'heroes' => $heroes]);
+        // Get stats for his Maps played
+        $maps = DB::table('participations')
+            ->join('games', 'participations.game_id', '=', 'games.id')
+            ->join('maps', 'games.map_id', '=', 'maps.id')
+            ->select(
+                'maps.id',
+                'maps.name',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('player_id', '=', $id)
+            ->groupBy('games.map_id')
+            ->get();
+
+        return view('players.show', ['player' => $player, 'heroes' => $heroes, 'maps' => $maps]);
     }
     
     /**
