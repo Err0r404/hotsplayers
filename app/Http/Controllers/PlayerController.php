@@ -74,7 +74,7 @@ class PlayerController extends Controller{
         $heroes = DB::table('participations')
                     ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
                     ->select(
-                        'participations.hero_id',
+                        'heroes.id',
                         'heroes.name',
                         DB::raw('COUNT(1) AS total_games'),
                         DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),

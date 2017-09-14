@@ -24,7 +24,7 @@
                 <tbody>
                 @foreach ($heroes as $hero)
                     <tr>
-                        <td>{{ $hero->name }}</td>
+                        <td><a href="{{ url('heroes/'.$hero->id) }}">{{ $hero->name }}</a></td>
                         <td>{{ $hero->total_games }}</td>
                         <td>{{ $hero->percent_win }}%</td>
                     </tr>

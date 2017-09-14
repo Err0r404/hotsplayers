@@ -13,10 +13,12 @@
 
     <div class="row">
         <div class="col">
+            <h2 class="display-3">Maps</h2>
+
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Map</th>
+                        <th>Map's name</th>
                         <th>Total games</th>
                         <th>Winrate</th>
                     </tr>
@@ -29,6 +31,29 @@
                         <td>{{ $map->percent_win }}%</td>
                     </tr>
                 @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col">
+            <h2 class="display-3">Best players</h2>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Battletag</th>
+                        <th>Total games</th>
+                        <th>Winrate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach ($players as $player)
+                    <tr>
+                        <td><a href="{{ url('/players/'.$player->id) }}">{{ $player->battletag }}</a></td>
+                        <td>{{ $player->total_games }}</td>
+                        <td>{{ $player->percent_win }}%</td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

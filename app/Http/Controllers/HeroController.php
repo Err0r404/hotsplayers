@@ -79,9 +79,23 @@ class HeroController extends Controller
             ->get();
 
         // Get 10 bests players with this hero
-
-        return view('heroes.show', ['hero' => $hero, 'maps' => $maps]);
-
+        $players = DB::table('participations')
+            ->join('players', 'participations.player_id', '=', 'players.id')
+            ->select(
+                'players.id',
+                'players.battletag',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('participations.hero_id', $id)
+            ->groupBy('players.id')
+            ->having('total_games', '>', 10)
+            ->orderBy('percent_win', 'desc')
+            ->limit(10)
+            ->get();
+            
+        return view('heroes.show', ['hero' => $hero, 'maps' => $maps, 'players' => $players]);
     }
 
     /**
