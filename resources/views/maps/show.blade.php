@@ -13,7 +13,7 @@
 
     <div class="row">
         <div class="col">
-            <h2 class="display-3">Maps</h2>
+            <h2 class="display-3">Heroes</h2>
 
             <table class="table">
                 <thead>
@@ -24,11 +24,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($maps as $map)
+                @foreach ($heroes as $hero)
                     <tr>
-                        <td>{{ $map->name }}</td>
-                        <td>{{ $map->total_games }}</td>
-                        <td>{{ $map->percent_win }}%</td>
+                        <td><a href="{{ url('/heroes/'.$hero->id) }}">{{ $hero->name }}</a></td>
+                        <td>{{ $hero->total_games }}</td>
+                        <td>{{ $hero->percent_win }}%</td>
                     </tr>
                 @endforeach
                 </tbody>
