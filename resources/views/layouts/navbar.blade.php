@@ -11,13 +11,13 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item{{ Request::path() == 'players' ? ' active' : '' }}">
+                <li class="nav-item{{ Request::is('players*') ? ' active' : '' }}">
                     <a class="nav-link" href="{{url('/players/')}}">Players</a>
                 </li>
-                <li class="nav-item{{ Request::path() == 'heroes' ? ' active' : '' }}">
+                <li class="nav-item{{ Request::is('heroes*') ? ' active' : '' }}">
                     <a class="nav-link" href="{{url('/heroes/')}}">Heroes</a>
                 </li>
-                <li class="nav-item{{ Request::path() == 'maps' ? ' active' : '' }}">
+                <li class="nav-item{{ Request::is('maps*') ? ' active' : '' }}">
                     <a class="nav-link" href="{{url('/maps/')}}">Maps</a>
                 </li>
             </ul>
