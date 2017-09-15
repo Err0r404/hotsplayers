@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-class MapController extends Controller 
+use App\Map;
+use Illuminate\Support\Facades\DB;
+
+class MapController extends Controller
 {
 
   /**
@@ -10,9 +13,21 @@ class MapController extends Controller
    *
    * @return Response
    */
-  public function index()
-  {
-    
+  public function index(){
+      $maps = DB::table('participations')
+          ->join('games', 'participations.game_id', '=', 'games.id')
+          ->join('maps', 'games.map_id', '=', 'maps.id')
+          ->select(
+              'maps.id',
+              'maps.name',
+              DB::raw('COUNT(1) AS total_games')
+          )
+          ->groupBy('games.map_id')
+          ->orderBy('maps.name')
+          ->get();
+
+      return view('maps.index', ['maps' => $maps]);
+
   }
 
   /**
@@ -41,9 +56,12 @@ class MapController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function show($id)
-  {
-    
+  public function show($id){
+      $map = Map::find($id);
+
+
+
+      return view('maps.show', ['map' => $map]);
   }
 
   /**
