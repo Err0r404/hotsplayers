@@ -26,7 +26,7 @@
                 <tbody>
                 @foreach ($maps as $map)
                     <tr>
-                        <td>{{ $map->name }}</td>
+                        <td><a href="{{ url('/maps/'.$map->id) }}">{{ $map->name }}</a></td>
                         <td>{{ $map->total_games }}</td>
                         <td>{{ $map->percent_win }}%</td>
                     </tr>
