@@ -11,27 +11,31 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Total games</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($maps as $map)
-                    <tr>
-                        <td>
-                            <a href="{{ url('maps/'.$map->id) }}">{{ $map->name }}</a>
-                        </td>
-                        <td>{{ $map->total_games }}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
 
-        </div>
-    </div>
+    <?php $col = 0  ?>
+    @foreach($maps as $key => $map)
+        @if($col == 0)
+            <div class="row mb-5">
+        @endif
+
+            <div class="col-sm-3">
+                <a href="{{ url('maps/'.$map->id) }}" class="text-dark">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ URL::asset('/images/maps/'.str_replace(':', '', $map->name).'.jpg') }}" alt="{{ $map->name }} battleground from Heroes Of The Storm">
+                        {{--<img class="card-img-top" src="//via.placeholder.com/255x145" alt="{{ $map->name }} battleground from Heroes Of The Storm">--}}
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-0">{{ $map->name }}</h6>
+                            <p class="card-text mb-0">{{ $map->total_games }} games</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <?php $col = $col+1 ?>
+
+        @if($col == 4 || $key+1 == sizeof($maps))
+            <?php $col = 0 ?>
+            </div>
+        @endif
+    @endforeach
 @endsection
