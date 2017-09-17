@@ -5,9 +5,15 @@
 @endsection
 
 @section('container')
-    <div class="row">
-        <div class="col">
-            <h1 class="display-1">{{ $hero->name }}</h1>
+    <div class="row mb-5">
+        <div class="col-sm-2">
+            <img class="img-fluid" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="{{ $hero->name }} portrait from Heroes Of The Storm">
+        </div>
+
+        <div class="col-sm-10">
+            <h1 class="display-3 mt-5">{{ $hero->name }}</h1>
+            <p class="mb-1 text-muted">{{ $hero->total_games }} games played</p>
+            <p class="mb-1 text-muted">{{ $hero->percent_win }}% of victory</p>
         </div>
     </div>
 

@@ -59,8 +59,24 @@ class HeroController extends Controller
      * @return Response
      */
     public function show($id){
-        $hero = Hero::find($id);
-
+        // $hero = Hero::find($id);
+    
+        $hero = DB::table('participations')
+            ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
+            ->select(
+                'participations.hero_id',
+                'heroes.id',
+                'heroes.name',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('participations.hero_id', $id)
+            ->groupBy('hero_id')
+            ->orderBy('heroes.name')
+            ->get();
+    
+    
         // Get stats for each Map
         $maps = DB::table('participations')
             ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
@@ -95,7 +111,7 @@ class HeroController extends Controller
             ->limit(10)
             ->get();
             
-        return view('heroes.show', ['hero' => $hero, 'maps' => $maps, 'players' => $players]);
+        return view('heroes.show', ['hero' => $hero[0], 'maps' => $maps, 'players' => $players]);
     }
 
     /**
