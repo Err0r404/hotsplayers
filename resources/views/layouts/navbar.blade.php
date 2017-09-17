@@ -22,9 +22,15 @@
                 </li>
             </ul>
 
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form action="{{ url('search') }}" method="post" class="form-inline my-2 my-lg-0">
+                {{ csrf_field() }}
+
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+
+                <button class="btn btn-link my-2 my-sm-0 text-dark" type="submit">
+                    <span class="sr-only">Search</span>
+                    <i class="ion-android-search"></i>
+                </button>
             </form>
         </div>
     </div>
