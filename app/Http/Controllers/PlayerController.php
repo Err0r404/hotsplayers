@@ -68,7 +68,19 @@ class PlayerController extends Controller{
      */
     public function show($id){
         // Get the Player
-        $player = Player::find($id);
+        //$player = Player::find($id);
+        $player = DB::table('participations')
+            ->join('players', 'participations.player_id', '=', 'players.id')
+            ->select(
+                'players.id',
+                'battletag',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('player_id', '=', $id)
+            ->groupBy('player_id')
+            ->get();
 
         // Get stats for all his Heroes played
         $heroes = DB::table('participations')
@@ -82,6 +94,7 @@ class PlayerController extends Controller{
             )
             ->where('player_id', '=', $id)
             ->groupBy('hero_id')
+            ->orderBy('total_games', 'desc')
             ->get();
         
         // Get stats for his Maps played
@@ -97,9 +110,10 @@ class PlayerController extends Controller{
             )
             ->where('player_id', '=', $id)
             ->groupBy('games.map_id')
+            ->orderBy('total_games', 'desc')
             ->get();
 
-        return view('players.show', ['player' => $player, 'heroes' => $heroes, 'maps' => $maps]);
+        return view('players.show', ['player' => $player[0], 'heroes' => $heroes, 'maps' => $maps]);
     }
     
     /**
