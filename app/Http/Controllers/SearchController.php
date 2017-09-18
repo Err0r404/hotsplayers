@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller{
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @internal param Request $request
      */
