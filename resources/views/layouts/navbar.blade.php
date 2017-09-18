@@ -22,10 +22,10 @@
                 </li>
             </ul>
 
-            <form action="{{ url('search') }}" method="post" class="form-inline my-2 my-lg-0">
+            <form action="{{ url('search') }}" method="post" class="form-inline my-2 my-lg-0" autocomplete="off">
                 {{ csrf_field() }}
 
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="query">
 
                 <button class="btn btn-link my-2 my-sm-0 text-dark" type="submit">
                     <span class="sr-only">Search</span>

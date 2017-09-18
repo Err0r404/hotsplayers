@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller{
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @internal param Request $request
      */
     public function index(Request $request){
-        //$players = Player::search($request->input('search'))->get();
-        $players = Player::search($request->input('search'))->paginate();
+    
+        $query = $request->input('query');
+        $players = Player::search($query)->paginate(5);
 
-        return view('search.index', ['search' => $request->input('search'), 'players' => $players]);
+        return view('search.index', ['search' => $query, 'players' => $players]);
     }
 }
