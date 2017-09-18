@@ -107,6 +107,10 @@ class ScrapApi extends Command
                         $map = Map::firstOrCreate(
                             array('name' => $apiMapName)
                         );
+    
+                        // Update the column updated_at
+                        $map->touch();
+                        
                         //$this->info("Map : $map");
 
                         // Get or create Game
@@ -114,6 +118,10 @@ class ScrapApi extends Command
                             ['api_id' => $apiId],
                             ['type' => $apiGameType, 'length' => $apiGameLength, 'date' => $apiGameDate, 'map_id' => $map->id]
                         );
+                        
+                        // Update the column updated_at
+                        $game->touch();
+
                         //$this->info("Game : $game");
 
                         // Loop trough all players in the replay
@@ -129,12 +137,20 @@ class ScrapApi extends Command
                                 ['blizzard_id' => $apiBlizzardId],
                                 ['battletag' => $apiBattletag]
                             );
+                            
+                            // Update the column updated_at
+                            $player->touch();
+                            
                             //$this->info("Player : $player");
 
                             // Get or create Hero
                             $hero = Hero::firstOrCreate(
                                 ['name' => $apiHeroName]
                             );
+    
+                            // Update the column updated_at
+                            $hero->touch();
+    
                             //$this->info("Hero : $hero");
 
                             // Get or create Participation
@@ -142,6 +158,10 @@ class ScrapApi extends Command
                                 ['hero_id' => $hero->id, 'player_id' => $player->id, 'game_id' => $game->id],
                                 ['win' => $apiWin]
                             );
+    
+                            // Update the column updated_at
+                            $participation->touch();
+    
                             //$this->info("Participation : $participation");
                         }
 
