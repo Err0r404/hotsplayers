@@ -35,9 +35,9 @@
         </div>
     </div>
 
-    {{--<div class="row">--}}
-        {{--<div class="col">--}}
-            {{--{{ $players->links('vendor.pagination.bootstrap-4') }}--}}
-        {{--</div>--}}
-    {{--</div>--}}
+    <div class="row">
+        <div class="col">
+            {{ $players->links('vendor.pagination.bootstrap-4') }}
+        </div>
+    </div>
 @endsection

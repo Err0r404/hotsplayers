@@ -12,8 +12,9 @@ class SearchController extends Controller{
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
-        $players = Player::search($request->input('search'))->get();
-        
+        //$players = Player::search($request->input('search'))->get();
+        $players = Player::search($request->input('search'))->paginate();
+
         return view('search.index', ['search' => $request->input('search'), 'players' => $players]);
     }
 }
