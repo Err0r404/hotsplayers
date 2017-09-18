@@ -11,7 +11,7 @@
         </div>
 
         <div class="col-sm-10">
-            <h1 class="display-3 mt-5">{{ $hero->name }}</h1>
+            <h1 class="display-3">{{ $hero->name }}</h1>
             <p class="mb-1 text-muted">{{ $hero->total_games }} games played</p>
             <p class="mb-1 text-muted">{{ $hero->percent_win }}% of victory</p>
         </div>
