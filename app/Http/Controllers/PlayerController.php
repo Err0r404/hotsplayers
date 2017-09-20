@@ -68,19 +68,23 @@ class PlayerController extends Controller{
      */
     public function show($id){
         // Get the Player
-        //$player = Player::find($id);
         $player = DB::table('participations')
             ->join('players', 'participations.player_id', '=', 'players.id')
+            ->join('games', 'participations.game_id', '=', 'games.id')
             ->select(
                 'players.id',
                 'battletag',
                 DB::raw('COUNT(1) AS total_games'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
-                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win'),
+                DB::raw('SUM(games.length) AS total_length')
             )
             ->where('player_id', '=', $id)
             ->groupBy('player_id')
             ->get();
+        
+        // Convert seconds played to a readable format
+        $player[0]->total_length = $this->secondsToHumanReadableString($player[0]->total_length);
 
         // Get stats for all his Heroes played
         $heroes = DB::table('participations')
