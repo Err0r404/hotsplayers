@@ -86,12 +86,13 @@ class PlayerController extends Controller{
         // Convert seconds played to a readable format
         $player[0]->total_length = $this->secondsToHumanReadableString($player[0]->total_length);
 
-        // Get stats for all his Heroes played
+        // Get stats for all his Heroes played without filtering the Games's type
         $heroes = DB::table('participations')
             ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
             ->select(
                 'heroes.id',
                 'heroes.name',
+                DB::raw("'All games' AS type"),
                 DB::raw('COUNT(1) AS total_games'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
                 DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
@@ -100,6 +101,29 @@ class PlayerController extends Controller{
             ->groupBy('hero_id')
             ->orderBy('total_games', 'desc')
             ->get();
+        
+        // Get stats for all his Heroes played without filtering the Games's type
+        $heroesByTypes = DB::table('participations')
+            ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
+            ->join('games', 'participations.game_id', '=', 'games.id')
+            ->select(
+                'heroes.id',
+                'heroes.name',
+                'games.type',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('player_id', '=', $id)
+            ->groupBy('hero_id')
+            ->groupBy('games.type')
+            ->orderBy('total_games', 'desc')
+            ->get();
+    
+        // Mix the 2 request
+        foreach($heroesByTypes as $hero){
+            $heroes->push($hero);
+        }
         
         // Get stats for his Maps played
         $maps = DB::table('participations')
@@ -116,8 +140,27 @@ class PlayerController extends Controller{
             ->groupBy('games.map_id')
             ->orderBy('total_games', 'desc')
             ->get();
+        
+        // Get all Games's types that the Player did
+        $types = DB::table('participations')
+            ->join('games', 'participations.game_id', '=', 'games.id')
+            ->select(
+                'games.type as name',
+                DB::raw('COUNT(1)')
+            )
+            ->where('player_id', '=', $id)
+            ->groupBy('games.type')
+            ->orderBy('type', 'asc')
+            ->get();
 
-        return view('players.show', ['player' => $player[0], 'heroes' => $heroes, 'maps' => $maps]);
+        return view(
+            'players.show',
+            [
+                'player' => $player[0],
+                'heroes' => $heroes,
+                'maps'   => $maps,
+                'types'  => $types,
+            ]);
     }
     
     /**
