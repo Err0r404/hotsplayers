@@ -28,8 +28,8 @@
             <div class="tab-content pt-5" id="nav-tabContent">
                 {{-- [START] Heroes --}}
                 <div class="tab-pane fade show active" id="nav-heroes" role="tabpanel" aria-labelledby="nav-heroes-tab">
-                    <div class="dropdown games-type">
-                        <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="dropdown games-type pb-5">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             All games
                         </button>
 
@@ -61,16 +61,16 @@
                             <tr data-type="{{ $hero->type }}" class="{{ $class }}">
                                 <td class="p-0">
                                     <a href="{{ url('heroes/'.$hero->id) }}">
-                                        <img class="img-responsive mr-3" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="Small portrait of {{ $hero->name }} from the game Heroes Of The Storm" width="49px">
+                                        <img class="img-responsive mr-3" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="Small portrait of {{ $hero->name }} from the game Heroes Of The Storm" height="49px">
                                         {{ $hero->name }}
                                     </a>
                                 </td>
                                 {{--<td>{{ $hero->type }}</td>--}}
-                                <td>{{ $hero->total_games }}</td>
-                                <td class="text-center p-2">
+                                <td class="w-25">{{ $hero->total_games }}</td>
+                                <td class="text-center p-2 w-25">
                                     <small>{{ $hero->percent_win }}%</small>
                                     <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ $hero->percent_win }}%" aria-valuenow="{{ $hero->percent_win }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ $hero->percent_win }}%; height: 3px;" aria-valuenow="{{ $hero->percent_win }}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </td>
                             </tr>
@@ -82,22 +82,52 @@
 
                 {{-- [START] Maps --}}
                 <div class="tab-pane fade" id="nav-maps" role="tabpanel" aria-labelledby="nav-maps-tab">
+                    <div class="dropdown games-type pb-5">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            All games
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item active" href="#">All games</a>
+                            @foreach($types as $type)
+                                <a class="dropdown-item" href="#">{{$type->name}}</a>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <table class="table table-hover table-responsive">
                         <thead>
                             <tr>
-                                <th>Map's name</th>
+                                <th>Map</th>
                                 <th>Total games</th>
                                 <th>Winrate</th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach ($maps as $map)
-                                <tr>
-                                <td><a href="{{ url('maps/'.$map->id) }}">{{ $map->name }}</a></td>
-                                <td>{{ $map->total_games }}</td>
-                                <td>{{ $map->percent_win }}%</td>
+                            <?php $class = "" ?>
+
+                            @if($map->type != "All games")
+                                <?php $class = "d-none" ?>
+                            @endif
+
+                            <tr data-type="{{ $map->type }}" class="{{ $class }}">
+                                <td class="p-0 w-50">
+                                    <a href="{{ url('maps/'.$map->id) }}">
+                                        <img class="img-responsive mr-3" src="{{ URL::asset('/images/maps/'.$map->name.'.jpg') }}" alt="Small representation of the battleground {{ $map->name }} from the game Heroes Of The Storm" height="49px">
+                                        {{ $map->name }}
+                                    </a>
+                                </td>
+                                <td class="w-25">{{ $map->total_games }}</td>
+                                <td class="text-center p-2 w-25">
+                                    <small>{{ $map->percent_win }}%</small>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ $map->percent_win }}%; height: 3px;" aria-valuenow="{{ $map->percent_win }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+
                             </tr>
-                            @endforeach
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

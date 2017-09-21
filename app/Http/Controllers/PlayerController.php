@@ -120,7 +120,7 @@ class PlayerController extends Controller{
             ->orderBy('total_games', 'desc')
             ->get();
     
-        // Mix the 2 request
+        // Mix the 2 Heroes's collections
         foreach($heroesByTypes as $hero){
             $heroes->push($hero);
         }
@@ -132,6 +132,7 @@ class PlayerController extends Controller{
             ->select(
                 'maps.id',
                 'maps.name',
+                DB::raw("'All games' AS type"),
                 DB::raw('COUNT(1) AS total_games'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
                 DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
@@ -141,6 +142,29 @@ class PlayerController extends Controller{
             ->orderBy('total_games', 'desc')
             ->get();
         
+        // Get stats for his Maps played
+        $mapsByTypes = DB::table('participations')
+            ->join('games', 'participations.game_id', '=', 'games.id')
+            ->join('maps', 'games.map_id', '=', 'maps.id')
+            ->select(
+                'maps.id',
+                'maps.name',
+                'games.type',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('player_id', '=', $id)
+            ->groupBy('games.map_id')
+            ->groupBy('games.type')
+            ->orderBy('total_games', 'desc')
+            ->get();
+        
+        // Mix the 2 Heroes's collections
+        foreach($mapsByTypes as $map){
+            $maps->push($map);
+        }
+    
         // Get all Games's types that the Player did
         $types = DB::table('participations')
             ->join('games', 'participations.game_id', '=', 'games.id')
