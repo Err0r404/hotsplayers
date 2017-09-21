@@ -89,11 +89,13 @@ class PlayerController extends Controller{
         // Get stats for all his Heroes played without filtering the Games's type
         $heroes = DB::table('participations')
             ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
+            ->join('games', 'participations.game_id', '=', 'games.id')
             ->select(
                 'heroes.id',
                 'heroes.name',
                 DB::raw("'All games' AS type"),
                 DB::raw('COUNT(1) AS total_games'),
+                DB::raw('CONCAT_WS(":", FLOOR(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) / 60), LPAD(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) % 60, 2, 0)) AS avg_length'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
                 DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
             )
@@ -111,6 +113,7 @@ class PlayerController extends Controller{
                 'heroes.name',
                 'games.type',
                 DB::raw('COUNT(1) AS total_games'),
+                DB::raw('CONCAT_WS(":", FLOOR(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) / 60), LPAD(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) % 60, 2, 0)) AS avg_length'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
                 DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
             )
@@ -134,6 +137,7 @@ class PlayerController extends Controller{
                 'maps.name',
                 DB::raw("'All games' AS type"),
                 DB::raw('COUNT(1) AS total_games'),
+                DB::raw('CONCAT_WS(":", FLOOR(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) / 60), LPAD(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) % 60, 2, 0)) AS avg_length'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
                 DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
             )
@@ -151,6 +155,7 @@ class PlayerController extends Controller{
                 'maps.name',
                 'games.type',
                 DB::raw('COUNT(1) AS total_games'),
+                DB::raw('CONCAT_WS(":", FLOOR(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) / 60), LPAD(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) % 60, 2, 0)) AS avg_length'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
                 DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
             )

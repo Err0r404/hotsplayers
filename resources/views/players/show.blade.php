@@ -46,7 +46,8 @@
                             <tr>
                                 <th>Hero</th>
                                 {{--<th>Type</th>--}}
-                                <th>Total games</th>
+                                <th>Games</th>
+                                <th>Average length</th>
                                 <th>Winrate</th>
                             </tr>
                         </thead>
@@ -67,6 +68,7 @@
                                 </td>
                                 {{--<td>{{ $hero->type }}</td>--}}
                                 <td class="w-25">{{ $hero->total_games }}</td>
+                                <td class="w-25">{{ $hero->avg_length }}</td>
                                 <td class="text-center p-2 w-25">
                                     <small>{{ $hero->percent_win }}%</small>
                                     <div class="progress">
@@ -99,7 +101,8 @@
                         <thead>
                             <tr>
                                 <th>Map</th>
-                                <th>Total games</th>
+                                <th>Games</th>
+                                <th>Average length</th>
                                 <th>Winrate</th>
                             </tr>
                         </thead>
@@ -112,13 +115,14 @@
                             @endif
 
                             <tr data-type="{{ $map->type }}" class="{{ $class }}">
-                                <td class="p-0 w-50">
+                                <td class="p-0">
                                     <a href="{{ url('maps/'.$map->id) }}">
                                         <img class="img-responsive mr-3" src="{{ URL::asset('/images/maps/'.$map->name.'.jpg') }}" alt="Small representation of the battleground {{ $map->name }} from the game Heroes Of The Storm" height="49px">
                                         {{ $map->name }}
                                     </a>
                                 </td>
-                                <td class="w-25">{{ $map->total_games }}</td>
+                                <td class="">{{ $map->total_games }}</td>
+                                <td class="">{{ $map->avg_length }}</td>
                                 <td class="text-center p-2 w-25">
                                     <small>{{ $map->percent_win }}%</small>
                                     <div class="progress">
