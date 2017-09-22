@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Hero;
-use App\Player;
 use Illuminate\Support\Facades\DB;
 
 class PlayerController extends Controller{
@@ -169,7 +167,50 @@ class PlayerController extends Controller{
         foreach($mapsByTypes as $map){
             $maps->push($map);
         }
+        
+        // Find teammates
+        $teammates = DB::table('participations')
+            ->join('games', 'participations.game_id', '=', 'games.id')
+            ->join('participations as p2', 'p2.game_id', '=', 'games.id')
+            ->join('players', 'p2.player_id', '=', 'players.id')
+            ->select(
+                'players.id',
+                'players.battletag',
+                DB::raw('COUNT(1) AS total_games'),
+                DB::raw('CONCAT_WS(":", FLOOR(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) / 60), LPAD(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) % 60, 2, 0)) AS avg_length'),
+                DB::raw('SUM(CASE WHEN p2.win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                DB::raw('ROUND((SUM(CASE WHEN p2.win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+            )
+            ->where('participations.player_id', '=', $id)
+            ->where('p2.player_id', '<>', $id)
+            ->groupBy('p2.player_id')
+            ->having('total_games', '>=', '5')
+            ->orderBy('total_games', 'desc')
+            ->orderBy('players.battletag', 'asc')
+            ->get();
+        
+        foreach($teammates as $teammate){
+            $mostPlayed = DB::table('participations')
+                ->join('games', 'participations.game_id', '=', 'games.id')
+                ->join('participations as p2', 'p2.game_id', '=', 'games.id')
+                ->join('heroes', 'p2.hero_id', '=', 'heroes.id')
+                ->select(
+                    'heroes.id',
+                    'heroes.name',
+                    DB::raw('COUNT(1) AS total_games')
+                )
+                ->where('participations.player_id', '=', $id)
+                ->where('p2.player_id', '=', $teammate->id)
+                ->groupBy('heroes.id')
+                // ->having('total_games', '>', '1')
+                ->orderBy('total_games', 'desc')
+                ->orderBy('heroes.name', 'asc')
+                ->limit(3)
+                ->get();
     
+            $teammate->{'heroes'} = $mostPlayed;
+       }
+            
         // Get all Games's types that the Player did
         $types = DB::table('participations')
             ->join('games', 'participations.game_id', '=', 'games.id')
@@ -185,11 +226,13 @@ class PlayerController extends Controller{
         return view(
             'players.show',
             [
-                'player' => $player[0],
-                'heroes' => $heroes,
-                'maps'   => $maps,
-                'types'  => $types,
-            ]);
+                'player'    => $player[0],
+                'types'     => $types,
+                'heroes'    => $heroes,
+                'maps'      => $maps,
+                'teammates' => $teammates,
+            ]
+        );
     }
     
     /**
