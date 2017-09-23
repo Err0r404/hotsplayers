@@ -19,6 +19,7 @@
 
     <div class="row">
         <div class="col">
+            {{-- [START] Tabs --}}
             <ul class="nav nav-tabs nav-justified" id="player-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="heroes-tab" data-toggle="tab" href="#heroes" role="tab" aria-controls="heroes" aria-expanded="true">Heroes</a>
@@ -30,7 +31,9 @@
                     <a class="nav-link" id="teammates-tab" data-toggle="tab" href="#teammates" role="tab" aria-controls="teammates">Teammates</a>
                 </li>
             </ul>
+            {{-- [END] Tabs --}}
 
+            {{-- [START] Tabs's contents --}}
             <div class="tab-content pt-5" id="player-tabs-content">
                 {{-- [START] Heroes --}}
                 <div class="tab-pane fade show active" id="heroes" role="tabpanel" aria-labelledby="heroes-tab">
@@ -51,7 +54,7 @@
                         <thead>
                             <tr>
                                 <th>Hero</th>
-                                <th>Type</th>
+                                {{--<th>Type</th>--}}
                                 <th>Games</th>
                                 <th>Average length</th>
                                 <th>Winrate</th>
@@ -72,7 +75,7 @@
                                         {{ $hero->name }}
                                     </a>
                                 </td>
-                                <td>{{ $hero->type }}</td>
+                                {{--<td>{{ $hero->type }}</td>--}}
                                 <td class="w-25">{{ $hero->total_games }}</td>
                                 <td class="w-25">{{ $hero->avg_length }}</td>
                                 <td class="text-center p-2 w-25">
@@ -123,7 +126,7 @@
                                 <tr data-type="{{ $map->type }}" class="{{ $class }}">
                                 <td class="p-0">
                                     <a href="{{ url('maps/'.$map->id) }}">
-                                        <img class="img-responsive mr-3" src="{{ URL::asset('/images/maps/'.$map->name.'.jpg') }}" alt="Small representation of the battleground {{ $map->name }} from the game Heroes Of The Storm" height="49px">
+                                        <img class="img-responsive mr-3" src="{{ URL::asset('/images/maps/'.str_replace(':', '', $map->name).'.jpg') }}" alt="Small representation of the battleground {{ $map->name }} from the game Heroes Of The Storm" height="49px">
                                         {{ $map->name }}
                                     </a>
                                 </td>
@@ -182,6 +185,7 @@
                 </div>
                 {{-- [END] Teammates --}}
             </div>
+            {{-- [END] Tabs's contents --}}
         </div>
     </div>
 @endsection
