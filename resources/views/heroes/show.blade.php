@@ -25,7 +25,7 @@
                     <a class="nav-link active" id="maps-tab" data-toggle="tab" href="#maps" role="tab" aria-controls="maps">Maps</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="counters-tab" data-toggle="tab" href="#counters" role="tab" aria-controls="counters" aria-expanded="true">Counters</a>
+                    <a class="nav-link" id="enemies-tab" data-toggle="tab" href="#enemies" role="tab" aria-controls="enemies" aria-expanded="true">Enemies</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="allies-tab" data-toggle="tab" href="#allies" role="tab" aria-controls="allies" aria-expanded="true">Allies</a>
@@ -71,16 +71,70 @@
                 </div>
                 {{-- [END] Maps --}}
 
-                <div class="tab-pane fade" id="counters" role="tabpanel" aria-labelledby="counters-tab">
-                    <div class="alert alert-info">
-                        Coming soon
-                    </div>
+                {{-- [START] Enemies --}}
+                <div class="tab-pane fade" id="enemies" role="tabpanel" aria-labelledby="enemies-tab">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Hero</th>
+                                <th>Games against {{ $hero->name }}</th>
+                                <th>Winrate against {{ $hero->name }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($enemies as $enemy)
+                                <tr>
+                                    <td class="p-0">
+                                        <a href="{{ url('heroes/'.$enemy->id) }}">
+                                            <img class="img-responsive mr-3" src="{{ URL::asset('/images/heroes/'.$enemy->name.'.jpg') }}" alt="Small portrait of {{ $enemy->name }} from the game Heroes Of The Storm" height="49px">
+                                            {{ $enemy->name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $enemy->total_games }}</td>
+                                    <td class="text-center p-2 w-50">
+                                        <small>{{ $enemy->percent_win }}%</small>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $enemy->percent_win }}%; height: 3px;" aria-valuenow="{{ $enemy->percent_win }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
+                {{-- [END] Enemies --}}
 
                 <div class="tab-pane fade" id="allies" role="tabpanel" aria-labelledby="allies-tab">
-                    <div class="alert alert-info">
-                        Coming soon
-                    </div>
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Hero</th>
+                                <th>Games with {{ $hero->name }}</th>
+                                <th>Winrate with {{ $hero->name }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($allies as $ally)
+                                <tr>
+                                    <td class="p-0">
+                                        <a href="{{ url('heroes/'.$ally->id) }}">
+                                            <img class="img-responsive mr-3" src="{{ URL::asset('/images/heroes/'.$ally->name.'.jpg') }}" alt="Small portrait of {{ $ally->name }} from the game Heroes Of The Storm" height="49px">
+                                            {{ $ally->name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $ally->total_games }}</td>
+                                    <td class="text-center p-2 w-50">
+                                        <small>{{ $ally->percent_win }}%</small>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $ally->percent_win }}%; height: 3px;" aria-valuenow="{{ $ally->percent_win }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
                 {{-- [START] Players --}}
