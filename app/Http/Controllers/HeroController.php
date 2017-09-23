@@ -59,8 +59,7 @@ class HeroController extends Controller
      * @return Response
      */
     public function show($id){
-        // $hero = Hero::find($id);
-    
+        // Get the Hero
         $hero = DB::table('participations')
             ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
             ->select(
@@ -97,16 +96,19 @@ class HeroController extends Controller
         // Get 10 bests players with this hero
         $players = DB::table('participations')
             ->join('players', 'participations.player_id', '=', 'players.id')
+            ->join('games', 'participations.game_id', '=', 'games.id')
             ->select(
                 'players.id',
                 'players.battletag',
                 DB::raw('COUNT(1) AS total_games'),
+                DB::raw('CONCAT_WS(":", FLOOR(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) / 60), LPAD(SEC_TO_TIME(ROUND(AVG(`games`.`length`),0)) % 60, 2, 0)) AS avg_length'),
                 DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
                 DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
             )
             ->where('participations.hero_id', $id)
             ->groupBy('players.id')
-            ->having('total_games', '>', 10)
+            // ->having('total_games', '>', 10)
+            ->orderBy('total_games', 'desc')
             ->orderBy('percent_win', 'desc')
             ->limit(10)
             ->get();
