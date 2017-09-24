@@ -61,7 +61,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($heroes as $hero)
+                            @foreach ($heroes as $hero)
                                 <?php $class = "" ?>
 
                                 @if($hero->type != "All games")
@@ -69,22 +69,22 @@
                                 @endif
 
                                 <tr data-type="{{ $hero->type }}" class="{{ $class }}">
-                                <td class="p-0">
-                                    <a href="{{ url('heroes/'.$hero->id) }}">
-                                        <img class="img-responsive mr-3" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="Small portrait of {{ $hero->name }} from the game Heroes Of The Storm" height="49px">
-                                        {{ $hero->name }}
-                                    </a>
-                                </td>
-                                {{--<td>{{ $hero->type }}</td>--}}
-                                <td class="w-25">{{ $hero->total_games }}</td>
-                                <td class="w-25">{{ $hero->avg_length }}</td>
-                                <td class="text-center p-2 w-25">
-                                    <small>{{ $hero->percent_win }}%</small>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ $hero->percent_win }}%; height: 3px;" aria-valuenow="{{ $hero->percent_win }}" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    <td class="p-0">
+                                        <a href="{{ url('heroes/'.$hero->id) }}">
+                                            <img class="img-responsive mr-3" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="Small portrait of {{ $hero->name }} from the game Heroes Of The Storm" height="49px">
+                                            {{ $hero->name }}
+                                        </a>
+                                    </td>
+                                    {{--<td>{{ $hero->type }}</td>--}}
+                                    <td class="w-25">{{ $hero->total_games }}</td>
+                                    <td class="w-25">{{ $hero->avg_length }}</td>
+                                    <td class="text-center p-2 w-25">
+                                        <small>{{ $hero->percent_win }}%</small>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $hero->percent_win }}%; height: 3px;" aria-valuenow="{{ $hero->percent_win }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -152,7 +152,7 @@
                             <tr>
                                 <th>Battletag</th>
                                 <th>Heroes</th>
-                                <th>Games</th>
+                                <th>Games together</th>
                                 <th>Average length</th>
                                 <th>Winrate</th>
                             </tr>

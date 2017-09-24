@@ -189,6 +189,7 @@ class PlayerController extends Controller{
             ->orderBy('players.battletag', 'asc')
             ->get();
         
+        // Loop trough all teammates and find their most played heroes
         foreach($teammates as $teammate){
             $mostPlayed = DB::table('participations')
                 ->join('games', 'participations.game_id', '=', 'games.id')
