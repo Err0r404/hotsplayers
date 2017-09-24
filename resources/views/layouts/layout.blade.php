@@ -31,11 +31,36 @@
         {{--}--}}
     {{--</style>--}}
 
+    {{-- Style for sticky-bottom-footer --}}
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 56px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 56px;
+            line-height: 56px; /* Vertically center the text there */
+            background-color: #f5f5f5;
+        }
+    </style>
+
     @include('layouts.navbar')
 
     <div class="container">
         @yield('container')
     </div>
+
+    @include('layouts.footer')
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
