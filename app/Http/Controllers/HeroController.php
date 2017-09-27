@@ -27,6 +27,10 @@ class HeroController extends Controller
             ->groupBy('hero_id')
             ->orderBy('heroes.name')
             ->get();
+    
+        foreach ($heroes as $hero) {
+            $hero->total_games = $this->numbertoHumanReadableFormat($hero->total_games);
+        }
 
         return view('heroes.index', ['heroes' => $heroes]);
     }
