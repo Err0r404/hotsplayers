@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Game;
 use App\Hero;
+use App\Http\Controllers\Controller;
 use App\Map;
 use App\Participation;
 use App\Player;
@@ -83,7 +84,7 @@ class ScrapApi extends Command
 
             // If API returned code 200
             if($response->code == '200'){
-                $this->info("Parsing URI : $uri$params");
+                $this->info("Parsing URI : $uri$params ($i/$loop)");
 
                 // Wrapper
                 $apiReplays = $response->body;
@@ -216,7 +217,12 @@ class ScrapApi extends Command
         // Execution time
         $time = $timeend-$timestart;
         $time = number_format($time,3);
-        $this->info("Scrip executed in $time seconds");
+        
+        // Convert seconds to a human readable format
+        $c = new Controller();
+        $time = $c->secondsToHumanReadableString($time);
+        
+        $this->info("Scrip executed in $time");
 
         $this->info("Done");
     }
