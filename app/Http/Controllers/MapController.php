@@ -56,7 +56,20 @@ class MapController extends Controller{
      */
     public function show($id){
         // Get Map's information
-        $map = Map::find($id);
+        // $map = Map::find($id);
+        $map = DB::table('participations')
+                 ->join('games', 'participations.game_id', '=', 'games.id')
+                 ->join('maps', 'games.map_id', '=', 'maps.id')
+                 ->select(
+                     'maps.id',
+                     'maps.name',
+                     DB::raw('COUNT(1) AS total_games'),
+                     DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
+                     DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+                 )
+                 ->where('maps.id', $id)
+                 ->groupBy('maps.id')
+                 ->get();
         
         // Get Heroes's winrates for the Map
         $heroes = DB::table('participations')
@@ -90,7 +103,7 @@ class MapController extends Controller{
              ->limit(10)
              ->get();
         
-        return view('maps.show', ['map' => $map, 'heroes' => $heroes, 'players' => $players]);
+        return view('maps.show', ['map' => $map[0], 'heroes' => $heroes, 'players' => $players]);
     }
     
     /**

@@ -5,11 +5,18 @@
 @endsection
 
 @section('container')
-    <div class="row">
-        <div class="col">
-            <h1 class="display-1">{{ $map->name }}</h1>
+    <div class="row mb-5">
+        <div class="col-sm-2">
+            <img class="img-fluid" src="{{ URL::asset('/images/maps/'.$map->name.'.jpg') }}" alt="{{ $map->name }} battleground from Heroes Of The Storm">
+        </div>
+
+        <div class="col-sm-10">
+            <h1 class="display-3">{{ $map->name }}</h1>
+            <p class="mb-1 text-muted">{{ $map->total_games }} games played</p>
+            <p class="mb-1 text-muted">{{ $map->percent_win }}% of victory</p>
         </div>
     </div>
+
 
     <div class="row">
         <div class="col">
