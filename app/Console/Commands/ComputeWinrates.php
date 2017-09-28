@@ -149,7 +149,7 @@ class ComputeWinrates extends Command
         $time = round(($timeend - $timestart),0);
     
         // Convert seconds to a human readable format
-        if($time < 60){
+        if($time > 60){
             $c = new Controller();
             $time = $c->secondsToHumanReadableString($time);
         }
