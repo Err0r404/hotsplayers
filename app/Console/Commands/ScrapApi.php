@@ -84,7 +84,7 @@ class ScrapApi extends Command
 
             // If API returned code 200
             if($response->code == '200'){
-                $this->info("Parsing URI : $uri$params ($i/$loop)");
+                $this->info("Parsing URI : $uri$params (".($i+1)."/$loop)");
 
                 // Wrapper
                 $apiReplays = $response->body;
@@ -187,7 +187,8 @@ class ScrapApi extends Command
                                 //$this->info("Participation : $participation");
                             }
         
-                            $this->info("Replay #$apiId done");
+                            // Basic log to show progress
+                            $this->output->write(".");
         
                             // Disable mass assignment
                             Map::reguard();
@@ -203,6 +204,9 @@ class ScrapApi extends Command
                         }
                     }
                 }
+
+                // Force line break
+                $this->output->write(" ", true);
             }
             else{
                 $this->error("API didn't response correctly");
@@ -210,13 +214,13 @@ class ScrapApi extends Command
                 $this->error("Response Code : #".$response->code);
             }
         }
-
+    
         // Ending time
         $timeend = microtime(true);
 
         // Execution time
-        $time = $timeend-$timestart;
-        $time = number_format($time,3);
+        $time = round(($timeend - $timestart),0);
+        //$time = number_format($time,3);
         
         // Convert seconds to a human readable format
         $c = new Controller();
