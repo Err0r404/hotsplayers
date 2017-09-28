@@ -226,7 +226,7 @@ class ScrapApi extends Command
         $c = new Controller();
         $time = $c->secondsToHumanReadableString($time);
         
-        $this->info("Scrip executed in $time");
+        $this->info("Script executed in $time");
 
         $this->info("Done");
     }
