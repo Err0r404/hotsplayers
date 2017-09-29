@@ -89,8 +89,7 @@ class ComputeWinrates extends Command
                 ->join('games', 'participations.game_id', '=', 'games.id')
                 ->join('maps', 'games.map_id', '=', 'maps.id')
                 ->select(
-                    DB::raw('COUNT(1) AS total_games'),
-                    DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win')
+                    DB::raw('COUNT(1) AS total_games')
                 )
                 ->where('maps.id', $map->id)
                 ->groupBy('maps.id')
@@ -99,7 +98,6 @@ class ComputeWinrates extends Command
             // Update the Hero with stats
             $map->update([
                 'games'     => $stats[0]->total_games,
-                'victories' => $stats[0]->total_win,
             ]);
             
             $this->output->write(".");
