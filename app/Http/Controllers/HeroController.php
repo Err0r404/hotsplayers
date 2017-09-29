@@ -14,22 +14,18 @@ class HeroController extends Controller
      * @return Response
      */
     public function index(){
-        $heroes = DB::table('participations')
-            ->join('heroes', 'participations.hero_id', '=', 'heroes.id')
+        $heroes = DB::table('heroes')
             ->select(
-                'participations.hero_id',
                 'heroes.id',
                 'heroes.name',
-                DB::raw('COUNT(1) AS total_games'),
-                DB::raw('SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END) AS total_win'),
-                DB::raw('ROUND((SUM(CASE WHEN win = 1 THEN 1 ELSE 0 END)/COUNT(1))*100,2) AS percent_win')
+                'heroes.games',
+                DB::raw('ROUND((victories/games)*100,2) AS winrate')
             )
-            ->groupBy('hero_id')
             ->orderBy('heroes.name')
             ->get();
     
         foreach ($heroes as $hero) {
-            $hero->total_games = $this->numbertoHumanReadableFormat($hero->total_games);
+            $hero->games = $this->numbertoHumanReadableFormat($hero->games);
         }
 
         return view('heroes.index', ['heroes' => $heroes]);

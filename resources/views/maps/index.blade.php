@@ -25,7 +25,7 @@
                         {{--<img class="card-img-top" src="//via.placeholder.com/255x145" alt="{{ $map->name }} battleground from Heroes Of The Storm">--}}
                         <div class="card-body p-2">
                             <h6 class="card-title mb-0">{{ $map->name }}</h6>
-                            <p class="card-text mb-0">{{ $map->total_games }} games</p>
+                            <p class="card-text mb-0">{{ $map->games }} games</p>
                         </div>
                     </div>
                 </a>

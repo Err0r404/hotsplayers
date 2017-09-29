@@ -23,8 +23,8 @@
                             <img class="card-img-top" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="Card image cap">
                             <div class="card-body p-2">
                                 <h6 class="card-title mb-0">{{ $hero->name }}</h6>
-                                <p class="card-text mb-0">{{ $hero->total_games }} games</p>
-                                <p class="card-text mb-0">{{ $hero->percent_win }}% winrate</p>
+                                <p class="card-text mb-0">{{ $hero->games }} games</p>
+                                <p class="card-text mb-0">{{ $hero->winrate }}% winrate</p>
                             </div>
                         </div>
                     </a>

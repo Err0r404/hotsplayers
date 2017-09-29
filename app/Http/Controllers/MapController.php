@@ -13,16 +13,13 @@ class MapController extends Controller{
      * @return Response
      */
     public function index(){
-        $maps = DB::table('participations')
-            ->join('games', 'participations.game_id', '=', 'games.id')
-            ->join('maps', 'games.map_id', '=', 'maps.id')
-            ->select('maps.id', 'maps.name', DB::raw('COUNT(1) AS total_games'))
-            ->groupBy('games.map_id')
+        $maps = DB::table('maps')
+            ->select('maps.id', 'maps.name', 'maps.games')
             ->orderBy('maps.name')
             ->get();
     
         foreach ($maps as $map) {
-            $map->total_games = $this->numbertoHumanReadableFormat($map->total_games);
+            $map->games = $this->numbertoHumanReadableFormat($map->games);
         }
         
         return view('maps.index', ['maps' => $maps]);
