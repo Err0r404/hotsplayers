@@ -19,6 +19,7 @@ class HeroController extends Controller
                 'heroes.id',
                 'heroes.name',
                 'heroes.games',
+                'heroes.games as original_games',
                 DB::raw('ROUND((victories/games)*100,2) AS winrate')
             )
             ->orderBy('heroes.name')

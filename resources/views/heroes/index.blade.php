@@ -11,30 +11,70 @@
         </div>
     </div>
 
-    <?php $col = 0  ?>
-    @foreach($heroes as $key => $hero)
-        @if($col == 0)
-            <div class="row mb-5">
-        @endif
+    <div id="heroes">
+        <div class="row mb-4">
+            <div class="col-sm-8">
+                <button class="sort btn btn-outline-primary" data-sort="name">
+                    Sort by name
+                </button>
 
-                <div class="col-sm-2">
+                <button class="sort btn btn-outline-primary" data-sort="games">
+                    Sort by games
+                </button>
+
+                <button class="sort btn btn-outline-primary" data-sort="winrate">
+                    Sort by winrate
+                </button>
+            </div>
+
+            <div class="col-sm-4">
+                <input class="search-heroes form-control" placeholder="Search for a hero" />
+            </div>
+        </div>
+
+        <ul class="list list-inline row">
+            @foreach($heroes as $key => $hero)
+                <li class="list-inline-item col-lg-2 col-sm-3 col-6 mr-0 mb-4">
                     <a href="{{ url('heroes/'.$hero->id) }}" class="text-dark">
                         <div class="card">
                             <img class="card-img-top" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="Card image cap">
                             <div class="card-body p-2">
-                                <h6 class="card-title mb-0">{{ $hero->name }}</h6>
+                                <h6 class="card-title mb-0"><span class="name">{{ $hero->name }}</span></h6>
                                 <p class="card-text mb-0">{{ $hero->games }} games</p>
-                                <p class="card-text mb-0">{{ $hero->winrate }}% winrate</p>
+                                <p class="card-text mb-0"><span class="winrate">{{ $hero->winrate }}</span>% winrate</p>
+                                <span class="d-none games">{{ $hero->original_games }}</span>
                             </div>
                         </div>
                     </a>
-                </div>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endsection
 
-        <?php $col = $col+1 ?>
+@section('scripts')
+    <script type="text/javascript">
+        var options = {
+            valueNames: [ 'name', 'games', 'winrate' ]
+        };
 
-        @if($col == 6 || $key+1 == sizeof($heroes))
-            <?php $col = 0 ?>
-            </div>
-        @endif
-    @endforeach
+        var heroesList = new List('heroes', options);
+
+        $('.search-heroes').on('keyup', function() {
+            var searchString = $(this).val();
+            heroesList.search(searchString, ['name']);
+        });
+
+        $(".sort").on("click", function(e){
+            $(".sort").find("i").remove();
+
+            var $i = $("<i/>", {"class": "ml-1"}).appendTo($(this));
+            if($(this).hasClass('desc')){
+                $i.addClass("ion-android-arrow-dropdown");
+            }
+            else if($(this).hasClass('asc')){
+                $i.addClass("ion-android-arrow-dropup");
+            }
+        });
+    </script>
 @endsection
