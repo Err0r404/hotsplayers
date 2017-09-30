@@ -37,7 +37,7 @@
                 <li class="list-inline-item col-lg-2 col-sm-3 col-6 mr-0 mb-4">
                     <a href="{{ url('heroes/'.$hero->id) }}" class="text-dark">
                         <div class="card">
-                            <img class="card-img-top" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="Card image cap">
+                            <img class="card-img-top" src="{{ URL::asset('/images/heroes/'.$hero->name.'.jpg') }}" alt="{{ $hero->name }} hero from Heroes Of The Storm">
                             <div class="card-body p-2">
                                 <h6 class="card-title mb-0"><span class="name">{{ $hero->name }}</span></h6>
                                 <p class="card-text mb-0">{{ $hero->games }} games</p>
