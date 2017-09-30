@@ -14,7 +14,12 @@ class MapController extends Controller{
      */
     public function index(){
         $maps = DB::table('maps')
-            ->select('maps.id', 'maps.name', 'maps.games')
+            ->select(
+                'maps.id',
+                'maps.name',
+                'maps.games',
+                'maps.games as original_games'
+            )
             ->orderBy('maps.name')
             ->get();
     
