@@ -104,6 +104,7 @@ class ComputeWinrates extends Command
         }
         $this->output->write(" ", true);
         
+        /*
         // Get all Players
         $totalPlayers = DB::table('players')->count();
         $this->info("Players : ".count($totalPlayers));
@@ -134,6 +135,7 @@ class ComputeWinrates extends Command
         });
     
         $this->output->write(" ", true);
+        */
     
         // Disable mass assignment
         Hero::reguard();
@@ -152,7 +154,7 @@ class ComputeWinrates extends Command
             $time = $c->secondsToHumanReadableString($time);
         }
         else{
-            $time = (string)$time."seconds";
+            $time = (string)$time."seconds<<";
         }
     
         $this->info("Script executed in $time");
