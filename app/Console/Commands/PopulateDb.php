@@ -57,11 +57,16 @@ class PopulateDb extends Command
         // Connect to HotsApi DB
         $hotsapi = DB::connection('mysql_external');
         
+        $totalReplays = $hotsapi->table('replays')->count();
+        $chunkSize    = 25000;
+        $nbLoop       = ceil($totalReplays/$chunkSize);
+        $iterator     = 1;
+        
         // Loop trough all replays by chunk
-        $hotsapi->table('replays')->where('id', '>', $lastGameId)->orderBy('id')->chunk(25000, function($replays){
-            // Connect to HotsApi DB
-            $hotsapi = DB::connection('mysql_external');
-    
+        $hotsapi->table('replays')->where('id', '>', $lastGameId)->orderBy('id')->chunk($chunkSize, function($replays) use($hotsapi, $iterator, $nbLoop){
+            // Show progress
+            $this->line("Chunk $iterator/$nbLoop");
+            
             // Loop trough all replays in the current chunk
             foreach($replays as $replay){
                 // Wrappers
@@ -129,6 +134,11 @@ class PopulateDb extends Command
                     $this->output->write(".");
                 }
             }
+            
+            // Force break line
+            $this->line("");
+            
+            $iterator++;
         });
     
         // Disable mass assignment
