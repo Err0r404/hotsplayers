@@ -7,8 +7,6 @@ use Laravel\Scout\Searchable;
 
 class Player extends Model 
 {
-    use Searchable;
-
     protected $table = 'players';
     public $timestamps = true;
     

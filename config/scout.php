@@ -74,25 +74,4 @@ return [
         'id'     => env('ALGOLIA_APP_ID', ''),
         'secret' => env('ALGOLIA_SECRET', ''),
     ],
-    
-    /*
-    |--------------------------------------------------------------------------
-    | TNT Search Configuration
-    |--------------------------------------------------------------------------
-    |
-    | https://github.com/teamtnt/laravel-scout-tntsearch-driver
-    |
-    */
-
-    'tntsearch' => [
-        'storage'       => storage_path(), //place where the index files will be stored
-        'fuzziness'     => env('TNTSEARCH_FUZZINESS', false),
-        'fuzzy'         => [
-            'prefix_length'  => 2,
-            'max_expansions' => 50,
-            'distance'       => 2,
-        ],
-        'asYouType'     => false,
-        'searchBoolean' => env('TNTSEARCH_BOOLEAN', false),
-    ],
 ];
