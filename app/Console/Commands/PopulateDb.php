@@ -54,8 +54,13 @@ class PopulateDb extends Command
         // If DB is emtpy start at 0
         $lastGameId = (sizeof($lastGame) == 0) ? 0 : $lastGame->api_id;
     
+        // Disable loggin for performance
+        DB::connection('mysql_external')->disableQueryLog();
+        DB::connection()->disableQueryLog();
+    
         // Connect to HotsApi DB
         $hotsapi = DB::connection('mysql_external');
+        $hotsapi->disableQueryLog();
         
         $totalReplays = $hotsapi->table('replays')->count();
         $chunkSize    = 25000;
@@ -63,7 +68,7 @@ class PopulateDb extends Command
         $iterator     = 1;
         
         // Loop trough all replays by chunk
-        $hotsapi->table('replays')->where('id', '>', $lastGameId)->orderBy('id')->chunk($chunkSize, function($replays) use($hotsapi, $iterator, $nbLoop){
+        $hotsapi->table('replays')->where('id', '>', $lastGameId)->orderBy('id')->chunk($chunkSize, function($replays) use($hotsapi, &$iterator, $nbLoop){
             // Show progress
             $this->line("Chunk $iterator/$nbLoop");
             
@@ -83,7 +88,7 @@ class PopulateDb extends Command
                     );
     
                     // Update the column updated_at
-                    $map->touch();
+                    //$map->touch();
     
                     // Get or create Game
                     $game = Game::firstOrCreate(
@@ -92,7 +97,7 @@ class PopulateDb extends Command
                     );
     
                     // Update the column updated_at
-                    $game->touch();
+                    //$game->touch();
     
                     // Loop trough players from the replay
                     $apiPlayers = $hotsapi->table('players')->where('replay_id', '=', $apiId)->get();
@@ -110,7 +115,7 @@ class PopulateDb extends Command
                         );
         
                         // Update the column updated_at
-                        $player->touch();
+                        //$player->touch();
         
                         // Get or create Hero
                         $hero = Hero::firstOrCreate(
@@ -118,7 +123,7 @@ class PopulateDb extends Command
                         );
         
                         // Update the column updated_at
-                        $hero->touch();
+                        //$hero->touch();
         
                         // Get or create Participation
                         $participation = Participation::firstOrCreate(
@@ -127,7 +132,7 @@ class PopulateDb extends Command
                         );
         
                         // Update the column updated_at
-                        $participation->touch();
+                        //$participation->touch();
                     }
     
                     // Basic log to show progress
