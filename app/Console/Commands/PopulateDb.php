@@ -62,7 +62,7 @@ class PopulateDb extends Command
         $hotsapi = DB::connection('mysql_external');
         $hotsapi->disableQueryLog();
         
-        $totalReplays = $hotsapi->table('replays')->count();
+        $totalReplays = $hotsapi->table('replays')->where('id', '>', $lastGameId)->count();
         $chunkSize    = 25000;
         $nbLoop       = ceil($totalReplays/$chunkSize);
         $iterator     = 1;
