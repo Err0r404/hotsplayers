@@ -53,6 +53,8 @@ class PopulateDb extends Command
     
         // If DB is emtpy start at 0
         $lastGameId = (sizeof($lastGame) == 0) ? 0 : $lastGame->api_id;
+        
+        $this->line("Starting at $lastGameId");
     
         // Disable loggin for performance
         DB::connection('mysql_external')->disableQueryLog();
@@ -62,7 +64,7 @@ class PopulateDb extends Command
         $hotsapi = DB::connection('mysql_external');
         $hotsapi->disableQueryLog();
         
-        $totalReplays = $hotsapi->table('replays')->count();
+        $totalReplays = $hotsapi->table('replays')->where('id', '>', $lastGameId)->count();
         $chunkSize    = 25000;
         $nbLoop       = ceil($totalReplays/$chunkSize);
         $iterator     = 1;
