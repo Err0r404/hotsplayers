@@ -21,26 +21,31 @@ class Controller extends BaseController
      *
      */
     function secondsToHumanReadableString(int $seconds){
-        $m = floor(($seconds%3600)/60);
-        $h = floor(($seconds%86400)/3600);
-        $d = floor(($seconds)/86400);
-        
-        $result = "";
-        
-        if($d > 0)
-            $result.= "$d days";
-        
-        if($result != "")
-            $result .= ", ";
-        
-        if($h > 0)
-            $result.= "$h hours";
-        
-        if($result != "")
-            $result .= ", ";
-        
-        if($m > 0)
-            $result.= "$m minutes";
+        if($seconds > 59){
+            $m = floor(($seconds%3600)/60);
+            $h = floor(($seconds%86400)/3600);
+            $d = floor(($seconds)/86400);
+    
+            $result = "";
+    
+            if($d > 0)
+                $result.= "$d days";
+    
+            if($result != "")
+                $result .= ", ";
+    
+            if($h > 0)
+                $result.= "$h hours";
+    
+            if($result != "")
+                $result .= ", ";
+    
+            if($m > 0)
+                $result.= "$m minutes";
+        }
+        else{
+            $result = "$seconds seconds";
+        }
         
         return $result;
     }
