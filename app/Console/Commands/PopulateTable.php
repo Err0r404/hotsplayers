@@ -153,6 +153,9 @@ class PopulateTable extends Command
                         usleep(250000);
     
                     }while($offset < $maxPlayers);
+    
+                    // Reset offset for next hero
+                    $offset     = $offsetOption;
                 }
                 
                 break;
