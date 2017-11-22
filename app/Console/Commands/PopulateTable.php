@@ -14,7 +14,7 @@ class PopulateTable extends Command
      *
      * @var string
      */
-    protected $signature = 'populate:table {tableName} {--offset=0}';
+    protected $signature = 'populate:table {tableName} {--offset=0} {--heroId=1}';
 
     /**
      * The console command description.
@@ -43,7 +43,7 @@ class PopulateTable extends Command
         $allowedTableNames = array("games", "heroes", "maps", "participations", "players");
         $tableName         = $this->argument("tableName");
         $offsetOption      = $this->option("offset");
-    
+        $heroIdOption      = $this->option("heroId");
     
         // Disable loggin for performance
         DB::connection('mysql_external')->disableQueryLog();
@@ -107,12 +107,12 @@ class PopulateTable extends Command
                 $this->line("WARNING this will take several hours");
                 sleep(3);
     
-                $limit      = 10000;
+                $limit      = 25000;
                 $offset     = $offsetOption;
                 $maxPlayers = $hotsapi->table('players')->count();
                 $maxHeroes  = $hotsapi->table('custom_heroes')->count();
                 
-                for($heroId = 1; $heroId <= $maxHeroes; $heroId++){
+                for($heroId = $heroIdOption; $heroId <= $maxHeroes; $heroId++){
                     do{
                         // Starting time
                         $timeStart = microtime(true);
@@ -134,7 +134,7 @@ class PopulateTable extends Command
                                 LIMIT 	$limit OFFSET $offset
                                 ON DUPLICATE KEY UPDATE `updated_at` = NOW()";
     
-                        $res = DB::insert($sql);
+                        DB::insert($sql);
                         
                         $offset += $limit;
     
@@ -152,7 +152,7 @@ class PopulateTable extends Command
     
                         usleep(250000);
     
-                    }while($offset < $maxPlayers || DB::getPdo()->lastInsertId() != 0);
+                    }while($offset < $maxPlayers);
                 }
                 
                 break;
