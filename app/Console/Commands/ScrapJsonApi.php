@@ -92,12 +92,13 @@ class ScrapJsonApi extends Command
                 // Create a json file (1 file for 1000 pages approx.)
                 $jsonContent = $response->raw_body;
                 $fileName = (int)($i / 1000);
+                $filePath = "storage/app/json/$fileName.json";
     
                 // NOT memory friendly when create large file
                 //Storage::append("json/$fileName.json", $jsonContent);
                 
                 // Memory friendly when create large file
-                file_put_contents("storage/app/json/$fileName.json", $jsonContent, FILE_APPEND | LOCK_EX);
+                file_put_contents($filePath, $jsonContent."\r\n", FILE_APPEND | LOCK_EX);
             }
             else{
                 $this->error("API didn't response correctly");
